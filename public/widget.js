@@ -319,29 +319,38 @@
           left: 0;
           top: 0;
           width: 100%;
-          height: 100%;
-          max-height: 100dvh;
+          height: 100dvh;
+          max-height: -webkit-fill-available;
           border-radius: 0;
           display: flex;
           flex-direction: column;
+          overflow: hidden;
         }
 
         .chatbot-header {
           border-radius: 0;
           flex-shrink: 0;
+          position: sticky;
+          top: 0;
+          z-index: 10;
         }
 
         .chatbot-messages {
-          flex: 1;
+          flex: 1 1 auto;
           min-height: 0;
           overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
         }
 
         .chatbot-input-area {
           border-radius: 0;
           flex-shrink: 0;
           padding: 12px 16px;
-          padding-bottom: max(12px, env(safe-area-inset-bottom));
+          padding-bottom: max(16px, env(safe-area-inset-bottom));
+          position: sticky;
+          bottom: 0;
+          background: white;
+          z-index: 10;
         }
 
         .chatbot-button {
@@ -490,25 +499,23 @@
   // Toggle chat window
   function toggleChat() {
     isOpen = !isOpen;
-    const window = document.querySelector('.chatbot-window');
+    const chatWindow = document.querySelector('.chatbot-window');
 
     if (isOpen) {
-      window.classList.add('open');
-      // Scroll to bottom and focus input after opening
+      chatWindow.classList.add('open');
+      // Prevent body scroll on mobile when chat is open
+      document.body.style.overflow = 'hidden';
+      // Scroll messages to bottom after opening
       setTimeout(() => {
         const messagesDiv = document.getElementById('chatbot-messages');
-        const input = document.querySelector('#chatbot-input');
         if (messagesDiv) {
           messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
-        if (input) {
-          input.focus();
-          // Scroll input into view on mobile
-          input.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
-      }, 100);
+      }, 50);
     } else {
-      window.classList.remove('open');
+      chatWindow.classList.remove('open');
+      // Restore body scroll
+      document.body.style.overflow = '';
     }
   }
 
