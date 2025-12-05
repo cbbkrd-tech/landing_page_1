@@ -474,6 +474,16 @@
       }
     });
 
+    // Scroll to input when focused (mobile keyboard)
+    inputArea.querySelector('#chatbot-input').addEventListener('focus', () => {
+      setTimeout(() => {
+        const messagesDiv = document.getElementById('chatbot-messages');
+        if (messagesDiv) {
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+      }, 300);
+    });
+
     return window;
   }
 
@@ -484,7 +494,19 @@
 
     if (isOpen) {
       window.classList.add('open');
-      document.querySelector('#chatbot-input').focus();
+      // Scroll to bottom and focus input after opening
+      setTimeout(() => {
+        const messagesDiv = document.getElementById('chatbot-messages');
+        const input = document.querySelector('#chatbot-input');
+        if (messagesDiv) {
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        if (input) {
+          input.focus();
+          // Scroll input into view on mobile
+          input.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      }, 100);
     } else {
       window.classList.remove('open');
     }
