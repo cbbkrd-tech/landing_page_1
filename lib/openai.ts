@@ -12,6 +12,7 @@ export interface Message {
 
 /**
  * Stream chat completion from OpenAI with FAQ context
+ * Uses FAQ as primary source, AI knowledge as fallback
  */
 export async function streamChatCompletion(
   messages: Message[],
@@ -23,18 +24,23 @@ export async function streamChatCompletion(
     content: `Jesteś asystentem dla polskich opiekunek pracujących w Niemczech.
 Pomagasz z pytaniami o Gewerbe, legalną pracę, ubezpieczenia i wszystkie aspekty zatrudnienia.
 
+ZASADY ODPOWIEDZI:
+1. NAJPIERW szukaj odpowiedzi w bazie wiedzy FAQ poniżej
+2. Jeśli FAQ nie zawiera odpowiedzi, użyj swojej wiedzy o niemieckim prawie pracy, Gewerbe, ubezpieczeniach
+3. Podawaj tylko sprawdzone, rzetelne informacje
+4. Jeśli nie jesteś pewien, zasugeruj kontakt z biurem
+
 Odpowiadaj:
 - Po polsku
 - Zwięźle (2-4 zdania)
 - Pomocnie i przyjaźnie
-- Opieraj się na dostarczonej bazie wiedzy FAQ
-- Jeśli nie masz pewności, zasugeruj kontakt bezpośredni
+- Konkretnie i merytorycznie
 
 Baza wiedzy FAQ:
 
 ${faqContext}
 
-Jeśli użytkownik pyta o coś poza zakresem FAQ, odpowiedz ogólnie i zachęć do kontaktu.`,
+Jeśli pytanie wykracza poza FAQ, odpowiedz na podstawie swojej wiedzy o niemieckim systemie prawnym i pracy.`,
   };
 
   // Create OpenAI stream
