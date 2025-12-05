@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { findFAQMatch, getFAQContext, type FAQ } from '@/lib/faq-matcher';
+import { getFAQContext, type FAQ } from '@/lib/faq-matcher';
 import { streamChatCompletion, createTextStream, type Message } from '@/lib/openai';
 import faqData from '@/public/faq.json';
 
@@ -26,30 +26,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Step 1: Try to find exact FAQ match
-    const faqMatch = findFAQMatch(message, faqs);
-
-    if (faqMatch) {
-      // FAQ match found - return instant answer
-      console.log(`[Chat API] FAQ match found: ${faqMatch.question}`);
-
-      // Create streaming response from FAQ answer
-      const stream = createTextStream(faqMatch.answer);
-
-      return new NextResponse(stream, {
-        headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
-          'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
-        },
-      });
-    }
-
-    // Step 2: No FAQ match - use OpenAI with FAQ context
-    console.log('[Chat API] No FAQ match, using OpenAI');
+    // Use OpenAI with FAQ context for all questions
+    console.log('[Chat API] Using OpenAI with FAQ context');
 
     // Check if OpenAI API key is configured
     if (!process.env.OPENAI_API_KEY) {
