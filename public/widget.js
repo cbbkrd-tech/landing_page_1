@@ -313,21 +313,35 @@
       /* Mobile styles */
       @media (max-width: 768px) {
         .chatbot-window {
+          position: fixed;
           bottom: 0;
           right: 0;
           left: 0;
           top: 0;
           width: 100%;
           height: 100%;
+          max-height: 100dvh;
           border-radius: 0;
+          display: flex;
+          flex-direction: column;
         }
 
         .chatbot-header {
           border-radius: 0;
+          flex-shrink: 0;
+        }
+
+        .chatbot-messages {
+          flex: 1;
+          min-height: 0;
+          overflow-y: auto;
         }
 
         .chatbot-input-area {
           border-radius: 0;
+          flex-shrink: 0;
+          padding: 12px 16px;
+          padding-bottom: max(12px, env(safe-area-inset-bottom));
         }
 
         .chatbot-button {
