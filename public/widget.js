@@ -314,43 +314,30 @@
       @media (max-width: 768px) {
         .chatbot-window {
           position: fixed;
-          bottom: 0;
-          right: 0;
-          left: 0;
-          top: 0;
+          inset: 0;
           width: 100%;
-          height: 100dvh;
-          max-height: -webkit-fill-available;
+          height: 100%;
           border-radius: 0;
-          display: flex;
-          flex-direction: column;
+          display: grid;
+          grid-template-rows: auto 1fr auto;
           overflow: hidden;
         }
 
         .chatbot-header {
           border-radius: 0;
-          flex-shrink: 0;
-          position: sticky;
-          top: 0;
-          z-index: 10;
         }
 
         .chatbot-messages {
-          flex: 1 1 auto;
-          min-height: 0;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
         }
 
         .chatbot-input-area {
           border-radius: 0;
-          flex-shrink: 0;
           padding: 12px 16px;
           padding-bottom: max(16px, env(safe-area-inset-bottom));
-          position: sticky;
-          bottom: 0;
           background: white;
-          z-index: 10;
+          border-top: 1px solid #e5e7eb;
         }
 
         .chatbot-button {
